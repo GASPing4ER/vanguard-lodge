@@ -73,7 +73,7 @@ const Navigator = () => {
           <li
             className={`
               ${
-                pathname === "/login"
+                pathname === "/api/auth/login"
                   ? "bg-primary text-neutral py-3 px-4 border border-solid border-primary"
                   : "hover:text-secondary"
               }
