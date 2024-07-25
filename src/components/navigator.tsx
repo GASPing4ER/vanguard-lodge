@@ -59,13 +59,13 @@ const Navigator = () => {
           <li
             className={`
               ${
-                pathname.startsWith("/dashboard")
+                pathname.startsWith("/app")
                   ? "bg-primary text-neutral py-3 px-4 border border-solid border-primary"
                   : "hover:text-secondary"
               }
             cursor-pointer py-3 px-4 rounded-2xl`}
           >
-            <Link href="/dashboard">
+            <Link href="/app">
               <FaUser />
             </Link>
           </li>

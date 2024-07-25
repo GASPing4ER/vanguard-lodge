@@ -1,6 +1,5 @@
 import { Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
-import Navigator from "@/src/components/navigator";
 import { Metadata } from "next";
 
 const cormorant = Cormorant_Garamond({
@@ -22,7 +21,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={cormorant.className} suppressHydrationWarning>
         {children}
-        <Navigator />
       </body>
     </html>
   );
