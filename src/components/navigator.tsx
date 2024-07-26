@@ -1,92 +1,105 @@
 "use client";
 
-import { FaUser } from "react-icons/fa";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs";
 
-const Navigator = () => {
-  const pathname = usePathname();
-  const { user, isAuthenticated, isLoading } = useKindeBrowserClient();
+type Position = {
+  left: number;
+  width: number;
+  opacity: number;
+};
 
+type CursorProps = {
+  position: Position;
+};
+
+export const Navigator = () => {
   return (
-    <div className="fixed bottom-[5%] left-1/2 -translate-x-1/2 py-3 px-4 rounded-2xl border border-solid border-primary bg-neutral">
-      <ul className="text-lg font-semibold flex justify-center items-center gap-4">
-        <li
-          className={`${
-            pathname === "/"
-              ? "bg-primary text-neutral py-3 px-4 border border-solid border-primary"
-              : "hover:text-secondary"
-          } cursor-pointer py-3 px-4 rounded-2xl`}
-        >
-          <Link href="/">Home</Link>
-        </li>
-        <li
-          className={`
-      ${
-        pathname === "/connect"
-          ? "bg-primary text-neutral py-3 px-4 border border-solid border-primary"
-          : "hover:text-secondary"
-      }
-          cursor-pointer py-3 px-4 rounded-2xl`}
-        >
-          <Link href="/connect">Connect</Link>
-        </li>
-        <li
-          className={`
-            ${
-              pathname === "/events"
-                ? "bg-primary text-neutral py-3 px-4 border border-solid border-primary"
-                : "hover:text-secondary"
-            }
-          cursor-pointer py-3 px-4 rounded-2xl`}
-        >
-          <Link href="/events">Events</Link>
-        </li>
-        <li
-          className={`
-            ${
-              pathname === "/contact"
-                ? "bg-primary text-neutral py-3 px-4 border border-solid border-primary"
-                : "hover:text-secondary"
-            }
-          cursor-pointer py-3 px-4 rounded-2xl`}
-        >
-          <Link href="/contact">Contact</Link>
-        </li>
-        {isAuthenticated ? (
-          <li
-            className={`
-              ${
-                pathname.startsWith("/app")
-                  ? "bg-primary text-neutral py-3 px-4 border border-solid border-primary"
-                  : "hover:text-secondary"
-              }
-            cursor-pointer py-3 px-4 rounded-2xl`}
-          >
-            <Link href="/app">
-              <FaUser />
-            </Link>
-          </li>
-        ) : (
-          <li
-            className={`
-              ${
-                pathname === "/api/auth/login"
-                  ? "bg-primary text-neutral py-3 px-4 border border-solid border-primary"
-                  : "hover:text-secondary"
-              }
-            cursor-pointer py-3 px-4 rounded-2xl`}
-          >
-            <Link href="/login">
-              <FaUser />
-            </Link>
-          </li>
-        )}
-      </ul>
+    <div className="fixed bottom-[5%] left-1/2 -translate-x-1/2">
+      <SlideTabs />
     </div>
   );
 };
 
-export default Navigator;
+const SlideTabs = () => {
+  const [position, setPosition] = useState({
+    left: 0,
+    width: 0,
+    opacity: 0,
+  });
+
+  return (
+    <ul
+      onMouseLeave={() => {
+        setPosition((pv) => ({
+          ...pv,
+          opacity: 0,
+        }));
+      }}
+      className="relative mx-auto flex w-fit rounded-full border border-black bg-white p-1"
+    >
+      <Tab setPosition={setPosition}>Home</Tab>
+      <Tab setPosition={setPosition} link="connect">
+        Connect
+      </Tab>
+      <Tab setPosition={setPosition} link="events">
+        Events
+      </Tab>
+      <Tab setPosition={setPosition} link="logout">
+        Logout
+      </Tab>
+
+      <Cursor position={position} />
+    </ul>
+  );
+};
+
+type TabProps = {
+  children: React.ReactNode;
+  setPosition: Dispatch<SetStateAction<Position>>;
+  link?: string;
+};
+
+const Tab = ({ children, setPosition, link }: TabProps) => {
+  const ref = useRef<HTMLLIElement>(null);
+
+  return (
+    <li
+      ref={ref}
+      onMouseEnter={() => {
+        if (!ref?.current) return;
+
+        const { width } = ref.current.getBoundingClientRect();
+
+        setPosition({
+          left: ref.current.offsetLeft,
+          width,
+          opacity: 1,
+        });
+      }}
+      className="relative z-10 block cursor-pointer px-3 py-1.5 text-xs text-white mix-blend-difference md:px-5 md:py-3 md:text-base"
+    >
+      {link === "logout" ? (
+        <LogoutLink>{children}</LogoutLink>
+      ) : link ? (
+        <Link href={`/app?layout=${link}`}>{children}</Link>
+      ) : (
+        <Link href="/app">{children}</Link>
+      )}
+    </li>
+  );
+};
+
+const Cursor = ({ position }: CursorProps) => {
+  return (
+    <motion.li
+      animate={{
+        ...position,
+      }}
+      className="absolute z-0 h-7 rounded-full bg-black md:h-12"
+    />
+  );
+};

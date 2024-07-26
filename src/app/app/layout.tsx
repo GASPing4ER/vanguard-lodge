@@ -1,4 +1,4 @@
-import Navigator from "@/src/components/navigator";
+import { Navigator } from "@/src/components/navigator";
 
 type AppLayoutProps = {
   children: React.ReactNode;
