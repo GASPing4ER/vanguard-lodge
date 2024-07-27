@@ -36,7 +36,9 @@ const HomeLayout = ({ user, member }: HomeLayoutProps) => {
           />
         )}
         <div className="flex flex-col justify-center ml-5">
-          <h2 className="text-2xl font-semibold">{user.given_name}</h2>
+          <h2 className="text-2xl font-semibold">
+            {member?.display_name || user.given_name}
+          </h2>
           <p className="text-lg text-zinc-400 -mt-1">
             {member ? "Authorized" : "Unauthorized"}
           </p>

@@ -6,6 +6,7 @@ import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/types";
 import { Member } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { memberFormSchema, TMemberForm } from "@/lib/validations";
+import FormBtn from "./form-btn";
 
 type AddMemberFormProps = {
   user: KindeUser;
@@ -116,11 +117,7 @@ const AddMemberForm = ({ user, member }: AddMemberFormProps) => {
           />
         </div>
       </div>
-      <div>
-        <button className="text-zinc-50 bg-zinc-950 py-4 px-5 rounded-xl cursor-pointer">
-          Save changes
-        </button>
-      </div>
+      <FormBtn />
     </form>
   );
 };
