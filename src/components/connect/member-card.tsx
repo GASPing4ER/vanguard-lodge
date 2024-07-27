@@ -7,7 +7,7 @@ type MemberCardProps = {
 
 const MemberCard = ({ member }: MemberCardProps) => {
   return (
-    <li className="flex flex-col items-center gap-1 bg-zinc-100 rounded p-8 w-fit">
+    <li className="flex flex-col items-center gap-1 bg-zinc-100 rounded p-8 w-56">
       <Image
         src={member.imageUrl}
         alt="member avatar"

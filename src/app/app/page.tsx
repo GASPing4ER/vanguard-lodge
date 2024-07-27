@@ -10,6 +10,8 @@ import { getMembers } from "@/src/actions/actions";
 type AppPageProps = {
   searchParams: {
     layout: string;
+    searchText: string;
+    occupation: string;
   };
 };
 
@@ -28,7 +30,7 @@ const AppPage = async ({ searchParams }: AppPageProps) => {
 
   const member = await getMemberById(user.id);
 
-  const { layout } = searchParams;
+  const { layout, searchText, occupation } = searchParams;
 
   if (!layout) {
     return (
@@ -47,7 +49,36 @@ const AppPage = async ({ searchParams }: AppPageProps) => {
     } else {
       if (layout === "connect") {
         const members = await getMembers();
-        return <ConnectLayout member={member} members={members} />;
+
+        const filteredMembers = [...members].filter((member) => {
+          if (searchText && occupation) {
+            return (
+              member.first_name
+                .toLowerCase()
+                .includes(searchText.toLowerCase()) &&
+              member.occupation === occupation
+            );
+          } else if (searchText) {
+            return (
+              member.first_name
+                .toLowerCase()
+                .includes(searchText.toLowerCase()) ||
+              member.email.toLowerCase().includes(searchText.toLowerCase())
+            );
+          } else if (occupation) {
+            return member.occupation === occupation;
+          } else {
+            return true;
+          }
+        });
+
+        return (
+          <ConnectLayout
+            member={member}
+            members={members}
+            filteredMembers={filteredMembers}
+          />
+        );
       }
     }
   }
