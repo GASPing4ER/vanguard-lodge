@@ -155,3 +155,14 @@ export const unlikeMember = async (memberId: string, currentUser: Member) => {
     console.error(error);
   }
 };
+
+export const getLikedMembers = async (currentUser: Member) => {
+  const likedMembers = await prisma.member.findMany({
+    where: {
+      id: {
+        in: currentUser.favorites,
+      },
+    },
+  });
+  return likedMembers;
+};

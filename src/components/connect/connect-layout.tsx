@@ -1,6 +1,7 @@
 import { Member } from "@prisma/client";
 import MemberCard from "./member-card";
 import SearchArea from "./search-area";
+import LikedUsersList from "./liked-users-list";
 
 type ConnectLayoutProps = {
   user: Member;
@@ -42,6 +43,7 @@ const ConnectLayout = ({
           ))}
         </ul>
       </div>
+      <LikedUsersList user={user} />
     </div>
   );
 };
