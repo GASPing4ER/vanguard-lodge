@@ -52,7 +52,7 @@ const AppPage = async ({ searchParams }: AppPageProps) => {
     }
   }
 
-  return <div></div>;
+  return <div>This layout is not supported yet!</div>;
 };
 
 export default AppPage;
