@@ -96,6 +96,10 @@ export const editMember = async (memberId: string, memberData: unknown) => {
 };
 
 export const getMembers = async () => {
-  const members = await prisma.member.findMany();
+  const members = await prisma.member.findMany({
+    orderBy: {
+      createdAt: "asc",
+    },
+  });
   return members;
 };
