@@ -58,6 +58,7 @@ model Member {
     occupation   String
     imageUrl     String
     events       Event[]
+    favorites    String[]
     createdAt    DateTime @default(now())
     updatedAt    DateTime @updatedAt
 }

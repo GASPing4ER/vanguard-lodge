@@ -74,7 +74,7 @@ const AppPage = async ({ searchParams }: AppPageProps) => {
 
         return (
           <ConnectLayout
-            member={member}
+            user={member}
             members={members}
             filteredMembers={filteredMembers}
           />

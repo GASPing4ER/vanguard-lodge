@@ -3,13 +3,13 @@ import MemberCard from "./member-card";
 import SearchArea from "./search-area";
 
 type ConnectLayoutProps = {
-  member: Member;
+  user: Member;
   members: Member[];
   filteredMembers: Member[];
 };
 
 const ConnectLayout = ({
-  member,
+  user,
   members,
   filteredMembers,
 }: ConnectLayoutProps) => {
@@ -31,7 +31,14 @@ const ConnectLayout = ({
       <div className="max-h-[400px] overflow-y-auto">
         <ul className="flex flex-wrap gap-5">
           {filteredMembers.map((member) => (
-            <MemberCard key={member.id} member={member} />
+            <MemberCard
+              key={member.id}
+              member={member}
+              user={user}
+              isLiked={
+                user.favorites ? !!user.favorites.includes(member.id) : false
+              }
+            />
           ))}
         </ul>
       </div>

@@ -19,9 +19,9 @@ const HomeLayout = ({ user, member }: HomeLayoutProps) => {
   }
 
   return (
-    <div className="flex flex-col gap-5 h-screen p-12">
-      <h1 className="text-4xl font-semibold">Profile</h1>
-      <p className="text-lg text-zinc-400">
+    <div className="flex flex-col gap-5 h-screen p-12 max-w-[1024px] mx-auto">
+      <h1 className="text-3xl font-semibold">Profile</h1>
+      <p className="text-lg text-zinc-400 -mt-3">
         Update your personal details here.
       </p>
       <div className="flex">
@@ -29,8 +29,8 @@ const HomeLayout = ({ user, member }: HomeLayoutProps) => {
           <Image
             src={user.picture}
             alt="user avatar"
-            width={100}
-            height={100}
+            width={75}
+            height={75}
             className="rounded-full"
             priority
           />

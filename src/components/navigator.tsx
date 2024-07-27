@@ -2,7 +2,6 @@
 
 import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { motion } from "framer-motion";
-
 import Link from "next/link";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs";
 
@@ -80,7 +79,7 @@ const Tab = ({ children, setPosition, link }: TabProps) => {
           opacity: 1,
         });
       }}
-      className="relative z-10 block cursor-pointer px-3 py-1.5 text-xs text-white mix-blend-difference md:px-5 md:py-3 md:text-base"
+      className="relative z-10 block cursor-pointer text-white mix-blend-difference px-5 py-3 text-base"
     >
       {link === "logout" ? (
         <LogoutLink>{children}</LogoutLink>
@@ -99,7 +98,7 @@ const Cursor = ({ position }: CursorProps) => {
       animate={{
         ...position,
       }}
-      className="absolute z-0 h-7 rounded-full bg-black md:h-12"
+      className="absolute z-0 rounded-full bg-black h-12"
     />
   );
 };
