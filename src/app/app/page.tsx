@@ -4,6 +4,8 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
 import { getMemberById } from "@/lib/server-utils";
 import ConnectLayout from "@/src/components/connect/connect-layout";
+import NottificationModal from "@/src/components/nottificationModal";
+import { getMembers } from "@/src/actions/actions";
 
 type AppPageProps = {
   searchParams: {
@@ -29,16 +31,23 @@ const AppPage = async ({ searchParams }: AppPageProps) => {
   const { layout } = searchParams;
 
   if (!layout) {
-    return <HomeLayout user={user} member={member} />;
+    return (
+      <div>
+        <HomeLayout user={user} member={member} />
+      </div>
+    );
   } else {
     if (!member) {
       return (
-        <HomeLayout user={user} member={member} />
-        // Create a nottification component that will tell the user to fill in the form
+        <div>
+          <HomeLayout user={user} member={member} />
+          <NottificationModal layout={layout} />
+        </div>
       );
     } else {
       if (layout === "connect") {
-        return <ConnectLayout user={user} member={member} />;
+        const members = await getMembers();
+        return <ConnectLayout member={member} members={members} />;
       }
     }
   }

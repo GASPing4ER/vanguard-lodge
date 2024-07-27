@@ -94,3 +94,8 @@ export const editMember = async (memberId: string, memberData: unknown) => {
 
   revalidatePath("/app", "layout");
 };
+
+export const getMembers = async () => {
+  const members = await prisma.member.findMany();
+  return members;
+};
