@@ -28,7 +28,7 @@ const MembersList = () => {
   );
 
   return (
-    <div className="max-h-[450px] overflow-y-auto shadow-xl px-5 py-10">
+    <div className="max-h-[450px] overflow-y-auto shadow-xl px-5 py-10 rounded-md">
       <ul className="flex flex-wrap gap-5">
         {filteredMembers.map((member) => (
           <MemberCard key={member.id} member={member} />

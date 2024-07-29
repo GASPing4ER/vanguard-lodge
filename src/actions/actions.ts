@@ -172,3 +172,80 @@ export const getLikedMembers = async (member: Member) => {
   });
   return likedMembers;
 };
+
+export const getEvents = async () => {
+  const events = await prisma.event.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return events;
+};
+
+export const joinEvent = async (eventId: number) => {
+  // authentication
+  const user = await getUser();
+  if (!user) {
+    return {
+      message: "User not found",
+    };
+  }
+  console.log("checking if user is already joined...");
+  try {
+    // Check if the member already joined the event
+    const existingParticipant = await prisma.eventParticipant.findUnique({
+      where: {
+        eventId_memberId: {
+          eventId: eventId,
+          memberId: user.id,
+        },
+      },
+    });
+
+    if (existingParticipant) {
+      return {
+        message: "Already joined",
+      };
+    }
+
+    console.log("joining event...");
+
+    // Create a new participant entry
+    await prisma.eventParticipant.create({
+      data: {
+        eventId: eventId,
+        memberId: user.id,
+      },
+    });
+
+    // Optionally, you can revalidate the path to reflect changes
+    revalidatePath("/app");
+
+    return {
+      message: "Joined successfully",
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      message: "Failed to join event",
+    };
+  }
+};
+
+export const checkJoinedEvent = async (eventId: number) => {
+  const user = await getUser();
+  if (!user) {
+    return {
+      message: "User not found",
+    };
+  }
+  const joinedMember = await prisma.eventParticipant.findUnique({
+    where: {
+      eventId_memberId: {
+        eventId: eventId,
+        memberId: user.id,
+      },
+    },
+  });
+  return !!joinedMember;
+};
