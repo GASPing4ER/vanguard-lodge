@@ -1,27 +1,10 @@
-// app-page.tsx
-import HomeLayout from "@/src/components/home/home-layout";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { redirect } from "next/navigation";
 import { getMemberById } from "@/lib/server-utils";
-import ConnectLayout from "@/src/components/connect/connect-layout";
-import NottificationModal from "@/src/components/nottificationModal";
-import { getMembers } from "@/src/actions/actions";
+import AddMemberForm from "@/src/components/home/add-member-form";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import Image from "next/image";
 
-type AppPageProps = {
-  searchParams: {
-    layout: string;
-    searchText: string;
-    occupation: string;
-  };
-};
-
-const AppPage = async ({ searchParams }: AppPageProps) => {
-  const { isAuthenticated, getUser } = getKindeServerSession();
-  const isLoggedIn = await isAuthenticated();
-
-  if (!isLoggedIn) {
-    redirect("/api/auth/login");
-  }
+const AppPage = async () => {
+  const { getUser } = getKindeServerSession();
 
   const user = await getUser();
   if (!user) {
@@ -30,60 +13,35 @@ const AppPage = async ({ searchParams }: AppPageProps) => {
 
   const member = await getMemberById(user.id);
 
-  const { layout, searchText, occupation } = searchParams;
-
-  if (!layout) {
-    return (
-      <div>
-        <HomeLayout user={user} member={member} />
-      </div>
-    );
-  } else {
-    if (!member) {
-      return (
-        <div>
-          <HomeLayout user={user} member={member} />
-          <NottificationModal layout={layout} />
-        </div>
-      );
-    } else {
-      if (layout === "connect") {
-        const members = await getMembers();
-
-        const filteredMembers = [...members].filter((member) => {
-          if (searchText && occupation) {
-            return (
-              member.first_name
-                .toLowerCase()
-                .includes(searchText.toLowerCase()) &&
-              member.occupation === occupation
-            );
-          } else if (searchText) {
-            return (
-              member.first_name
-                .toLowerCase()
-                .includes(searchText.toLowerCase()) ||
-              member.email.toLowerCase().includes(searchText.toLowerCase())
-            );
-          } else if (occupation) {
-            return member.occupation === occupation;
-          } else {
-            return true;
-          }
-        });
-
-        return (
-          <ConnectLayout
-            user={member}
-            members={members}
-            filteredMembers={filteredMembers}
+  return (
+    <div className="flex flex-col gap-5 h-screen p-12 max-w-[1024px] mx-auto">
+      <h1 className="text-3xl font-semibold">Profile</h1>
+      <p className="text-lg text-zinc-400 -mt-3">
+        Update your personal details here.
+      </p>
+      <div className="flex">
+        {user.picture && (
+          <Image
+            src={user.picture}
+            alt="user avatar"
+            width={75}
+            height={75}
+            className="rounded-full"
+            priority
           />
-        );
-      }
-    }
-  }
-
-  return <div>This layout is not supported yet!</div>;
+        )}
+        <div className="flex flex-col justify-center ml-5">
+          <h2 className="text-2xl font-semibold">
+            {member?.display_name || user.given_name}
+          </h2>
+          <p className="text-lg text-zinc-400 -mt-1">
+            {member ? "Authorized" : "Unauthorized"}
+          </p>
+        </div>
+      </div>
+      <AddMemberForm user={user} member={member} />
+    </div>
+  );
 };
 
 export default AppPage;

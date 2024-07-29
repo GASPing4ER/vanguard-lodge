@@ -1,12 +1,12 @@
 "use client";
 
-import { addMember, editMember } from "@/src/actions/actions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/types";
 import { Member } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import { memberFormSchema, TMemberForm } from "@/lib/validations";
 import FormBtn from "./form-btn";
+import { useMemberContext } from "@/lib/hooks";
 
 type AddMemberFormProps = {
   user: KindeUser;
@@ -14,6 +14,7 @@ type AddMemberFormProps = {
 };
 
 const AddMemberForm = ({ user, member }: AddMemberFormProps) => {
+  const { handleAddMember, handleEditMember } = useMemberContext();
   const actionType = member ? "edit" : "add";
   const {
     register,
@@ -42,9 +43,9 @@ const AddMemberForm = ({ user, member }: AddMemberFormProps) => {
 
         const memberData = getValues();
         if (actionType === "add") {
-          await addMember(memberData);
+          await handleAddMember(memberData);
         } else if (actionType === "edit") {
-          await editMember(user.id, memberData);
+          await handleEditMember(user.id, memberData);
         }
       }}
       className="flex flex-col gap-5"

@@ -1,14 +1,24 @@
+import { checkAuth } from "@/lib/server-utils";
+import { getMembers } from "@/src/actions/actions";
 import { Navigator } from "@/src/components/navigator";
+import MemberContextProvider from "@/src/contexts/member-context-provider";
+import SearchContextProvider from "@/src/contexts/search-context-provider";
+import { Toaster } from "sonner";
 
 type AppLayoutProps = {
   children: React.ReactNode;
 };
 
-const AppLayout = ({ children }: AppLayoutProps) => {
+const AppLayout = async ({ children }: AppLayoutProps) => {
+  const member = await checkAuth();
+  const members = await getMembers();
   return (
     <div>
-      {children}
+      <MemberContextProvider data={members} currentMember={member}>
+        <SearchContextProvider>{children}</SearchContextProvider>
+      </MemberContextProvider>
       <Navigator />
+      <Toaster position="top-right" />
     </div>
   );
 };

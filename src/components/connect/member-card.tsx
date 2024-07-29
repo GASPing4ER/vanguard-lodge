@@ -4,14 +4,12 @@ import HeartIcon from "./heart-icon";
 
 type MemberCardProps = {
   member: Member;
-  user: Member;
-  isLiked: boolean;
 };
 
-const MemberCard = ({ member, user, isLiked }: MemberCardProps) => {
+const MemberCard = ({ member }: MemberCardProps) => {
   return (
-    <li className="relative flex flex-col items-center gap-1 bg-zinc-100 rounded p-8 w-56">
-      <HeartIcon isLiked={isLiked} member={member} user={user} />
+    <li className="relative text-center flex flex-col items-center gap-1 bg-zinc-100 rounded p-8 w-full xs:w-[calc(50%-16px)] sm:w-56">
+      {/* <HeartIcon member={member} /> */}
       <Image
         src={member.imageUrl}
         alt="member avatar"

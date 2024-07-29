@@ -129,6 +129,9 @@ export const likeMember = async (memberId: string, currentUser: Member) => {
     revalidatePath("/app");
   } catch (error) {
     console.error(error);
+    return {
+      message: "Failed to like member",
+    };
   }
 };
 
@@ -153,14 +156,17 @@ export const unlikeMember = async (memberId: string, currentUser: Member) => {
     revalidatePath("/app");
   } catch (error) {
     console.error(error);
+    return {
+      message: "Failed to unlike member",
+    };
   }
 };
 
-export const getLikedMembers = async (currentUser: Member) => {
+export const getLikedMembers = async (member: Member) => {
   const likedMembers = await prisma.member.findMany({
     where: {
       id: {
-        in: currentUser.favorites,
+        in: member.favorites,
       },
     },
   });

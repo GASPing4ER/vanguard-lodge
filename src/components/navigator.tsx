@@ -40,7 +40,7 @@ const SlideTabs = () => {
       }}
       className="relative mx-auto flex w-fit rounded-full border border-black bg-white p-1"
     >
-      <Tab setPosition={setPosition}>Home</Tab>
+      <Tab setPosition={setPosition}>Account</Tab>
       <Tab setPosition={setPosition} link="connect">
         Connect
       </Tab>
@@ -84,7 +84,7 @@ const Tab = ({ children, setPosition, link }: TabProps) => {
       {link === "logout" ? (
         <LogoutLink>{children}</LogoutLink>
       ) : link ? (
-        <Link href={`/app?layout=${link}`}>{children}</Link>
+        <Link href={`/app/${link}`}>{children}</Link>
       ) : (
         <Link href="/app">{children}</Link>
       )}
