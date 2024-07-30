@@ -8,24 +8,18 @@ import {
   unlikeMember,
 } from "@/src/actions/actions";
 import { Member } from "@prisma/client";
-import {
-  createContext,
-  useEffect,
-  useMemo,
-  useOptimistic,
-  useState,
-} from "react";
+import { createContext, useOptimistic, useState } from "react";
 import { toast } from "sonner";
 
 type MemberContextProviderProps = {
   data: Member[];
-  currentMember: Member;
+  currentMember: Member | null;
   children: React.ReactNode;
 };
 
 type TMemberContext = {
   members: Member[];
-  currentMember: Member;
+  currentMember: Member | null;
   selectedMember: Member | undefined;
   numberOfMembers: number;
   selectedMemberId: Member["id"] | null;
@@ -35,8 +29,8 @@ type TMemberContext = {
     editedMember: memberData
   ) => Promise<void>;
   handleChangeSelectedMemberId: (memberId: Member["id"]) => void;
-  handleLikeMember: (memberId: Member["id"]) => void;
-  handleUnlikeMember: (memberId: Member["id"]) => void;
+  // handleLikeMember: (memberId: Member["id"]) => void;
+  // handleUnlikeMember: (memberId: Member["id"]) => void;
 };
 
 export const MemberContext = createContext<TMemberContext | null>(null);
@@ -125,29 +119,29 @@ const MemberContextProvider = ({
     setSelectedMemberId(id);
   };
 
-  const handleLikeMember = async (memberId: Member["id"]) => {
-    setOptimisticMembers({
-      action: "like",
-      payload: { id: memberId, currentMemberId: currentMember.id },
-    });
-    const error = await likeMember(memberId, currentMember);
-    if (error) {
-      toast.warning(error.message);
-      return;
-    }
-  };
+  // const handleLikeMember = async (memberId: Member["id"]) => {
+  //   setOptimisticMembers({
+  //     action: "like",
+  //     payload: { id: memberId, currentMemberId: currentMember.id },
+  //   });
+  //   const error = await likeMember(memberId, currentMember);
+  //   if (error) {
+  //     toast.warning(error.message);
+  //     return;
+  //   }
+  // };
 
-  const handleUnlikeMember = async (memberId: Member["id"]) => {
-    setOptimisticMembers({
-      action: "unlike",
-      payload: { id: memberId, currentMemberId: currentMember.id },
-    });
-    const error = await unlikeMember(memberId, currentMember);
-    if (error) {
-      toast.warning(error.message);
-      return;
-    }
-  };
+  // const handleUnlikeMember = async (memberId: Member["id"]) => {
+  //   setOptimisticMembers({
+  //     action: "unlike",
+  //     payload: { id: memberId, currentMemberId: currentMember.id },
+  //   });
+  //   const error = await unlikeMember(memberId, currentMember);
+  //   if (error) {
+  //     toast.warning(error.message);
+  //     return;
+  //   }
+  // };
 
   return (
     <MemberContext.Provider
@@ -160,8 +154,8 @@ const MemberContextProvider = ({
         handleAddMember,
         handleEditMember,
         handleChangeSelectedMemberId,
-        handleLikeMember,
-        handleUnlikeMember,
+        // handleLikeMember,
+        // handleUnlikeMember,
       }}
     >
       {children}

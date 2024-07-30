@@ -45,7 +45,7 @@ const OpenedEvent = ({
     <div
       className={`${
         isOpen ? "visible" : "invisible"
-      } absolute w-full h-screen bg-zinc-50 top-0 left-0 flex justify-center items-center`}
+      } absolute w-full min-h-screen bg-zinc-50 top-0 left-0 flex justify-center items-center`}
     >
       <CgClose
         onClick={() => setOpen(false)}
@@ -71,7 +71,7 @@ const OpenedEvent = ({
         <p className="max-w-[400px] text-sm">{event.description}</p>
         {/* Format date like this: Day.Month.Year */}
         <p>
-          Date: {formatDate(event.date)}, {event.timeConstraint}
+          Date: {formatDate(event.date)}, {event.time}
         </p>
         <p>
           Location: {event.city}, {event.location}

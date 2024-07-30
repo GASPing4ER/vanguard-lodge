@@ -65,21 +65,20 @@ model Member {
 }
 
 model Event {
-    id             Int                @id @default(autoincrement())
-    name           String
-    slug           String             @unique
-    city           String
-    location       String
-    date           DateTime
-    activities     String[]
-    timeConstraint String
-    organizer      Member             @relation(fields: [organizerId], references: [id], name: "MemberEvents")
-    organizerId    String
-    imageUrl       String
-    description    String
-    createdAt      DateTime           @default(now())
-    updatedAt      DateTime           @updatedAt
-    participants   EventParticipant[]
+    id           Int                @id @default(autoincrement())
+    name         String
+    slug         String             @unique
+    city         String
+    location     String
+    date         DateTime
+    activities   String[]
+    time         String
+    organizer    Member             @relation(fields: [organizerId], references: [id], name: "MemberEvents")
+    organizerId  String
+    description  String
+    createdAt    DateTime           @default(now())
+    updatedAt    DateTime           @updatedAt
+    participants EventParticipant[]
 }
 
 model EventParticipant {

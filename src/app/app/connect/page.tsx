@@ -1,17 +1,14 @@
+import { checkMemberAuth, checkUserAuth } from "@/lib/server-utils";
 import { getMembers } from "@/src/actions/actions";
-import ConnectNavigator from "@/src/components/connect/connect-navigator";
-import LikedUsersList from "@/src/components/connect/liked-users-list";
 import MembersList from "@/src/components/connect/members-list";
 import SearchArea from "@/src/components/connect/search-area";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import NottificationModal from "@/src/components/nottification-modal";
 import { Member } from "@prisma/client";
 
 const ConnectPage = async () => {
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
-  if (!user) {
-    return <div>User not found</div>;
-  }
+  const user = await checkUserAuth();
+  const member = await checkMemberAuth(user);
+
   const members: Member[] = (await getMembers()) || [];
 
   return (
@@ -23,9 +20,8 @@ const ConnectPage = async () => {
         </div>
         <SearchArea />
         <MembersList />
-        {/* <LikedUsersList /> */}
       </div>
-      {/* <ConnectNavigator /> */}
+      <NottificationModal member={member} />
     </div>
   );
 };

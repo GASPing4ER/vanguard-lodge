@@ -3,7 +3,7 @@
 import { Event } from "@prisma/client";
 import logo from "/public/logo.svg";
 import Image from "next/image";
-import { truncateText } from "@/lib/utils";
+import { truncateText, formatDate } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import OpenedEvent from "./opened-event";
 import { checkJoinedEvent, joinEvent } from "@/src/actions/actions";
@@ -60,6 +60,9 @@ const EventCard = ({ event }: EventCardProps) => {
           </li>
         ))}
       </ul>
+      <p className="text-zinc-900">
+        {formatDate(event.date)}, {event.time}
+      </p>
       <p className="max-w-[400px] text-sm">
         {truncateText(event.description, 10)}
       </p>

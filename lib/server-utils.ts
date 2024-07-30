@@ -4,6 +4,7 @@ import prisma from "@/lib/db";
 import { Member } from "@prisma/client";
 import { redirect } from "next/navigation";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/types";
 
 export const getMemberById = async (id: Member["id"]) => {
   const member = await prisma.member.findUnique({
@@ -14,7 +15,7 @@ export const getMemberById = async (id: Member["id"]) => {
   return member;
 };
 
-export const checkAuth = async () => {
+export const checkUserAuth = async () => {
   const { isAuthenticated, getUser } = getKindeServerSession();
   const isLoggedIn = await isAuthenticated();
 
@@ -27,10 +28,14 @@ export const checkAuth = async () => {
     redirect("/api/auth/login");
   }
 
+  return user;
+};
+
+export const checkMemberAuth = async (user: KindeUser) => {
   const member = await getMemberById(user.id);
 
   if (!member) {
-    redirect("/app/");
+    return null;
   }
 
   return member;

@@ -3,7 +3,7 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import { memberDataSchema } from "@/lib/validations";
+import { eventDataSchema, memberDataSchema } from "@/lib/validations";
 import { getMemberById } from "@/lib/server-utils";
 import { Member } from "@prisma/client";
 
@@ -176,7 +176,7 @@ export const getLikedMembers = async (member: Member) => {
 export const getEvents = async () => {
   const events = await prisma.event.findMany({
     orderBy: {
-      createdAt: "desc",
+      date: "desc",
     },
   });
   return events;
@@ -248,4 +248,56 @@ export const checkJoinedEvent = async (eventId: number) => {
     },
   });
   return !!joinedMember;
+};
+
+export const addEvent = async (eventData: unknown) => {
+  // Authentication
+  const user = await getUser();
+  if (!user) {
+    return {
+      message: "User not found",
+    };
+  }
+
+  // Validation
+  const validatedEventData = eventDataSchema.safeParse(eventData);
+  if (!validatedEventData.success) {
+    return {
+      message: "Invalid event data",
+    };
+  }
+
+  // Transform validated data
+  const { date, activities, time, ...rest } = validatedEventData.data;
+  const formattedDate = new Date(date); // Convert date string to Date object
+  const activitiesArray = activities
+    .split(",")
+    .map((activity) => activity.trim()); // Convert comma-separated string to array
+
+  // Ensure timeConstraint is a string or use an empty string if undefined
+  const validTimeConstraint = time ?? "";
+
+  // Ensure imageUrl is a string or use an empty string if undefined
+
+  // Database mutation
+  try {
+    await prisma.event.create({
+      data: {
+        ...rest,
+        date: formattedDate,
+        activities: activitiesArray, // Ensure activities is an array of strings
+        organizerId: user.id, // Assuming the current user is the organizer
+        time: validTimeConstraint, // Ensure timeConstraint is always a string
+      },
+    });
+    revalidatePath("/app"); // Optionally revalidate the path
+    return {
+      message: "Event added successfully",
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      message: "Failed to add event",
+    };
+  }
 };

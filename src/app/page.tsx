@@ -6,9 +6,11 @@ import { redirect } from "next/navigation";
 import SignupButton from "../components/signup-btn";
 
 export default async function Home() {
-  const { isAuthenticated } = getKindeServerSession();
+  const { isAuthenticated, getUser } = getKindeServerSession();
   const isLoggedIn = await isAuthenticated();
+  const user = await getUser();
   console.log(isLoggedIn);
+  console.log(user);
   if (isLoggedIn) {
     redirect("/app");
   }

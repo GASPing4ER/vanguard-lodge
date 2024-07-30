@@ -4,17 +4,18 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FiAlertCircle } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Member } from "@prisma/client";
 
 type NottificationModalProps = {
-  layout: string;
+  member: Member | null;
 };
 
-const NottificationModal = ({ layout }: NottificationModalProps) => {
-  const [isOpen, setIsOpen] = useState(true);
+const NottificationModal = ({ member }: NottificationModalProps) => {
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    setIsOpen(true);
-  }, [layout]);
+    setIsOpen(!!!member);
+  }, []);
   return <SpringModal isOpen={isOpen} setIsOpen={setIsOpen} />;
 };
 

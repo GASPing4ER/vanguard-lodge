@@ -48,3 +48,16 @@ export const memberFormSchema = z
   }));
 
 export type TMemberForm = z.infer<typeof memberFormSchema>;
+
+export const eventDataSchema = z.object({
+  name: z.string().min(1, "Event name is required"),
+  slug: z.string().min(1, "Slug is required"),
+  city: z.string().min(1, "City is required"),
+  location: z.string().min(1, "Location is required"),
+  date: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "Date is required and must be a valid date",
+  }),
+  activities: z.string().min(1, "Activities are required"),
+  time: z.string().optional(), // Adjust as needed, you might want to make it required
+  description: z.string().min(1, "Description is required"),
+});
