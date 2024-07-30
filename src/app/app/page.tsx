@@ -25,7 +25,7 @@ const AppPage = async ({ searchParams }: AppPageProps) => {
   return (
     <div className="h-screen p-12 max-w-[1024px] mx-auto">
       {!layout && <HomeLayout user={user} member={member} />}
-      {layout === "events" && <MyEventsLayout />}
+      {layout === "events" && <MyEventsLayout user={user} />}
       <HomeNavigator />
     </div>
   );

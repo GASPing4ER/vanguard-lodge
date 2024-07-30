@@ -5,9 +5,11 @@ import prisma from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { eventDataSchema, memberDataSchema } from "@/lib/validations";
 import { getMemberById } from "@/lib/server-utils";
-import { Member } from "@prisma/client";
+import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/types";
 
 const { getUser } = getKindeServerSession();
+
+// MEMBER ACTIONS
 
 export const addMember = async (memberData: unknown) => {
   // authentication
@@ -113,6 +115,8 @@ export const getEvents = async () => {
   });
   return events;
 };
+
+// EVENTS ACTIONS
 
 export const joinEvent = async (eventId: number) => {
   // authentication
@@ -231,5 +235,44 @@ export const addEvent = async (eventData: unknown) => {
     return {
       message: "Failed to add event",
     };
+  }
+};
+
+export const getAttendingEvents = async (userId: KindeUser["id"]) => {
+  const events = await prisma.event.findMany({
+    where: {
+      participants: {
+        some: {
+          memberId: userId,
+        },
+      },
+    },
+  });
+  return events;
+};
+
+export const getOrganizingEvents = async (userId: KindeUser["id"]) => {
+  const events = await prisma.event.findMany({
+    where: {
+      organizerId: userId,
+    },
+  });
+  return events;
+};
+
+export const unattendEvent = async (memberId: string, eventId: number) => {
+  try {
+    await prisma.eventParticipant.delete({
+      where: {
+        eventId_memberId: {
+          eventId: eventId,
+          memberId: memberId,
+        },
+      },
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("Error unattending event:", error);
+    return { success: false, error: "Error unattending event" };
   }
 };
