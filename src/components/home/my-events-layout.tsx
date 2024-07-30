@@ -23,7 +23,7 @@ const MyEventsLayout = async ({ user }: MyEventsLayoutProps) => {
       <h2 className="text-2xl font-semibold">Attending:</h2>
       <AttendingEventsList user={user} events={attendingEvents} />
       <h2 className="text-2xl font-semibold">Organizing:</h2>
-      <OrganizingEventsList user={user} events={organizingEvents} />
+      <OrganizingEventsList events={organizingEvents} />
     </div>
   );
 };

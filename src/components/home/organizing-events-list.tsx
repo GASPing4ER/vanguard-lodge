@@ -1,15 +1,12 @@
 import { Event } from "@prisma/client";
-import UnattendButton from "./unattend-button";
-import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/types";
 import CheckAttendiesBtn from "./check-attendies-btn";
 import EventForm from "../events/event-form";
 
 type OrganizingEventsListProps = {
   events: Event[];
-  user: KindeUser;
 };
 
-const OrganizingEventsList = ({ events, user }: OrganizingEventsListProps) => {
+const OrganizingEventsList = ({ events }: OrganizingEventsListProps) => {
   return (
     <div>
       {events.length === 0 && <EventForm />}
