@@ -13,7 +13,7 @@ const ConnectPage = async () => {
 
   return (
     <div className="h-screen">
-      <div className="relative flex flex-col gap-5 max-w-[1024px] mx-auto p-10">
+      <div className="hidden relative lg:flex flex-col gap-5 max-w-[1024px] mx-auto p-10">
         <div className="flex items-end gap-5">
           <h1 className="text-2xl font-bold text-zinc-900">Members</h1>
           <p className="text-2xl font-bold text-zinc-400">{members.length}</p>
@@ -22,6 +22,9 @@ const ConnectPage = async () => {
         <MembersList />
       </div>
       <NottificationModal member={member} />
+      <div className="lg:hidden h-screen flex justify-center items-center">
+        <div className="text-4xl">Open on desktop!</div>
+      </div>
     </div>
   );
 };

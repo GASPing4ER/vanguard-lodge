@@ -15,7 +15,7 @@ export default async function Home() {
     redirect("/app");
   }
   return (
-    <main className="h-screen bg-primary flex flex-col justify-center items-center gap-5">
+    <main className=" h-screen bg-primary flex flex-col justify-center items-center gap-5">
       <Image src={logo} alt="logo" width={100} className="-mb-8" />
       <h1 className="text-secondary font-normal text-5xl">Vanguard Lodge</h1>
       <hr className="w-1/2" />

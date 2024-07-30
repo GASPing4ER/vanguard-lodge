@@ -23,11 +23,16 @@ const AppPage = async ({ searchParams }: AppPageProps) => {
   const member = await getMemberById(user.id);
 
   return (
-    <div className="h-screen p-12 max-w-[1024px] mx-auto">
-      {!layout && <HomeLayout user={user} member={member} />}
-      {layout === "events" && <MyEventsLayout user={user} />}
-      <HomeNavigator />
-    </div>
+    <>
+      <div className="hidden lg:block h-screen p-12 max-w-[1024px] mx-auto">
+        {!layout && <HomeLayout user={user} member={member} />}
+        {layout === "events" && <MyEventsLayout user={user} />}
+        <HomeNavigator />
+      </div>
+      <div className="lg:hidden h-screen flex justify-center items-center">
+        <div className="text-4xl">Open on desktop!</div>
+      </div>
+    </>
   );
 };
 
