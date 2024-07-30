@@ -19,7 +19,7 @@ const HomeLayout = ({ user, member }: HomeLayoutProps) => {
   }
 
   return (
-    <div className="flex flex-col gap-5 h-screen p-12 max-w-[1024px] mx-auto">
+    <div className="flex flex-col gap-5">
       <h1 className="text-3xl font-semibold">Profile</h1>
       <p className="text-lg text-zinc-400 -mt-3">
         Update your personal details here.

@@ -1,10 +1,19 @@
 import { getMemberById } from "@/lib/server-utils";
-import AddMemberForm from "@/src/components/home/add-member-form";
+import HomeLayout from "@/src/components/home/home-layout";
+import HomeNavigator from "@/src/components/home/home-navigator";
+import MyEventsLayout from "@/src/components/home/my-events-layout";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import Image from "next/image";
 
-const AppPage = async () => {
+type AppPageProps = {
+  searchParams: {
+    layout: string;
+  };
+};
+
+const AppPage = async ({ searchParams }: AppPageProps) => {
   const { getUser } = getKindeServerSession();
+
+  const { layout } = searchParams;
 
   const user = await getUser();
   if (!user) {
@@ -14,32 +23,10 @@ const AppPage = async () => {
   const member = await getMemberById(user.id);
 
   return (
-    <div className="flex flex-col gap-5 h-screen p-12 max-w-[1024px] mx-auto">
-      <h1 className="text-3xl font-semibold">Profile</h1>
-      <p className="text-lg text-zinc-400 -mt-3">
-        Update your personal details here.
-      </p>
-      <div className="flex">
-        {user.picture && (
-          <Image
-            src={user.picture}
-            alt="user avatar"
-            width={75}
-            height={75}
-            className="rounded-full"
-            priority
-          />
-        )}
-        <div className="flex flex-col justify-center ml-5">
-          <h2 className="text-2xl font-semibold">
-            {member?.display_name || user.given_name}
-          </h2>
-          <p className="text-lg text-zinc-400 -mt-1">
-            {member ? "Authorized" : "Unauthorized"}
-          </p>
-        </div>
-      </div>
-      <AddMemberForm user={user} member={member} />
+    <div className="h-screen p-12 max-w-[1024px] mx-auto">
+      {!layout && <HomeLayout user={user} member={member} />}
+      {layout === "events" && <MyEventsLayout />}
+      <HomeNavigator />
     </div>
   );
 };
