@@ -16,7 +16,6 @@ const MemberCard = ({ member }: MemberCardProps) => {
 
   return (
     <li className="relative text-center flex flex-col items-center gap-1 bg-zinc-100 rounded p-8 w-full xs:w-[calc(50%-16px)] sm:w-56">
-      {/* <HeartIcon member={member} /> */}
       {member.imageUrl || user.picture ? (
         <Image
           src={member.imageUrl || user?.picture || ""}

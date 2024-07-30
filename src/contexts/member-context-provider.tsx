@@ -1,12 +1,7 @@
 "use client";
 
 import { memberData } from "@/lib/types";
-import {
-  addMember,
-  editMember,
-  likeMember,
-  unlikeMember,
-} from "@/src/actions/actions";
+import { addMember, editMember } from "@/src/actions/actions";
 import { Member } from "@prisma/client";
 import { createContext, useOptimistic, useState } from "react";
 import { toast } from "sonner";
@@ -29,8 +24,6 @@ type TMemberContext = {
     editedMember: memberData
   ) => Promise<void>;
   handleChangeSelectedMemberId: (memberId: Member["id"]) => void;
-  // handleLikeMember: (memberId: Member["id"]) => void;
-  // handleUnlikeMember: (memberId: Member["id"]) => void;
 };
 
 export const MemberContext = createContext<TMemberContext | null>(null);
@@ -51,26 +44,6 @@ const MemberContextProvider = ({
           return state.map((member) =>
             member.id === payload.id
               ? { ...member, ...payload.editedMember }
-              : member
-          );
-        case "like":
-          return state.map((member) =>
-            member.id === payload.id
-              ? {
-                  ...member,
-                  favorites: [...member.favorites, payload.currentMemberId],
-                }
-              : member
-          );
-        case "unlike":
-          return state.map((member) =>
-            member.id === payload.id
-              ? {
-                  ...member,
-                  favorites: member.favorites.filter(
-                    (id) => id !== payload.currentMemberId
-                  ),
-                }
               : member
           );
         default:
@@ -119,30 +92,6 @@ const MemberContextProvider = ({
     setSelectedMemberId(id);
   };
 
-  // const handleLikeMember = async (memberId: Member["id"]) => {
-  //   setOptimisticMembers({
-  //     action: "like",
-  //     payload: { id: memberId, currentMemberId: currentMember.id },
-  //   });
-  //   const error = await likeMember(memberId, currentMember);
-  //   if (error) {
-  //     toast.warning(error.message);
-  //     return;
-  //   }
-  // };
-
-  // const handleUnlikeMember = async (memberId: Member["id"]) => {
-  //   setOptimisticMembers({
-  //     action: "unlike",
-  //     payload: { id: memberId, currentMemberId: currentMember.id },
-  //   });
-  //   const error = await unlikeMember(memberId, currentMember);
-  //   if (error) {
-  //     toast.warning(error.message);
-  //     return;
-  //   }
-  // };
-
   return (
     <MemberContext.Provider
       value={{
@@ -154,8 +103,6 @@ const MemberContextProvider = ({
         handleAddMember,
         handleEditMember,
         handleChangeSelectedMemberId,
-        // handleLikeMember,
-        // handleUnlikeMember,
       }}
     >
       {children}
