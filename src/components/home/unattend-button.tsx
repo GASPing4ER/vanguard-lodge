@@ -17,7 +17,7 @@ const UnattendButton = ({ memberId, eventId }: UnattendButtonProps) => {
   return (
     <button
       onClick={onUnattend}
-      className="bg-zinc-900 hover:bg-zinc-700 text-white font-bold py-2 px-4 rounded"
+      className="bg-zinc-900 hover:bg-zinc-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
     >
       <CgClose />
     </button>

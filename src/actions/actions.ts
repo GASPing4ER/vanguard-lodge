@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { eventDataSchema, memberDataSchema } from "@/lib/validations";
 import { getMemberById } from "@/lib/server-utils";
 import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/types";
+import { Member } from "@prisma/client";
 
 const { getUser } = getKindeServerSession();
 
@@ -275,4 +276,12 @@ export const unattendEvent = async (memberId: string, eventId: number) => {
     console.error("Error unattending event:", error);
     return { success: false, error: "Error unattending event" };
   }
+};
+
+export const getEventAttendees = async (eventId: number): Promise<Member[]> => {
+  const participants = await prisma.eventParticipant.findMany({
+    where: { eventId },
+    include: { member: true },
+  });
+  return participants.map((participant) => participant.member);
 };

@@ -1,6 +1,7 @@
 import { getAttendingEvents, getOrganizingEvents } from "@/src/actions/actions";
 import { KindeUser } from "@kinde-oss/kinde-auth-nextjs/types";
 import AttendingEventsList from "./attending-events-list";
+import OrganizingEventsList from "./organizing-events-list";
 
 type MyEventsLayoutProps = {
   user: KindeUser;
@@ -22,6 +23,7 @@ const MyEventsLayout = async ({ user }: MyEventsLayoutProps) => {
       <h2 className="text-2xl font-semibold">Attending:</h2>
       <AttendingEventsList user={user} events={attendingEvents} />
       <h2 className="text-2xl font-semibold">Organizing:</h2>
+      <OrganizingEventsList user={user} events={organizingEvents} />
     </div>
   );
 };
