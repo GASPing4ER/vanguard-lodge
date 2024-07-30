@@ -65,10 +65,9 @@ const MemberContextProvider = ({
   // handlers
   const handleAddMember = async (newMember: memberData) => {
     setOptimisticMembers({ action: "add", payload: newMember });
-    const error = await addMember(newMember);
-    if (error) {
-      toast.warning(error.message);
-      return;
+    const response = await addMember(newMember);
+    if (response?.message) {
+      toast.message(response.message);
     }
   };
 
@@ -80,11 +79,9 @@ const MemberContextProvider = ({
       action: "edit",
       payload: { id: memberId, editedMember },
     });
-    const error = await editMember(memberId, editedMember);
-
-    if (error) {
-      toast.warning(error.message);
-      return;
+    const response = await editMember(memberId, editedMember);
+    if (response?.message) {
+      toast.message(response.message);
     }
   };
 

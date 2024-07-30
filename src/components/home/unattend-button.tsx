@@ -3,6 +3,7 @@
 import { unattendEvent } from "@/src/actions/actions";
 import React from "react";
 import { CgClose } from "react-icons/cg";
+import { toast } from "sonner";
 
 type UnattendButtonProps = {
   memberId: string;
@@ -11,7 +12,12 @@ type UnattendButtonProps = {
 
 const UnattendButton = ({ memberId, eventId }: UnattendButtonProps) => {
   const onUnattend = async () => {
-    await unattendEvent(memberId, eventId);
+    const response = await unattendEvent(memberId, eventId);
+    if (response.success) {
+      toast.message("Successfully unattended event");
+    } else {
+      toast.message("Failed to unattend event");
+    }
   };
 
   return (

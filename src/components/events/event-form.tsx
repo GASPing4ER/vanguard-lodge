@@ -7,6 +7,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import { eventDataSchema } from "@/lib/validations";
 import { addEvent } from "@/src/actions/actions";
+import { toast } from "sonner";
 
 type FormDataProps = {
   name: string;
@@ -24,7 +25,6 @@ const EventForm = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
   const [showCalendar, setShowCalendar] = useState(false);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormDataProps>({
     name: "",
@@ -81,7 +81,7 @@ const EventForm = () => {
     const result = await addEvent(validatedEventData.data);
 
     if (result.message === "Event added successfully") {
-      setSuccessMessage(result.message);
+      toast.message(result.message);
       setError(null);
       setFormData({
         name: "",
@@ -93,6 +93,7 @@ const EventForm = () => {
         time: "",
         description: "",
       });
+      setIsOpen(false);
     } else {
       setError(result.message);
     }

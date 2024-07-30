@@ -16,7 +16,7 @@ const AttendingEventsList = ({ events, user }: AttendingEventsListProps) => {
           <div className="text-lg text-gray-500">No events found</div>
           <Link
             href="/app/events"
-            className="bg-zinc-900 text-zinc-50 px-4 py-1 rounded text-zinc-50"
+            className="bg-zinc-900 px-4 py-1 rounded text-zinc-50"
           >
             Find Events
           </Link>

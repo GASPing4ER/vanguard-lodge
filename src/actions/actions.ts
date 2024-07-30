@@ -45,6 +45,9 @@ export const addMember = async (memberData: unknown) => {
   }
 
   revalidatePath("/app");
+  return {
+    message: "Member authorized successfully",
+  };
 };
 
 export const editMember = async (memberId: string, memberData: unknown) => {
@@ -97,6 +100,9 @@ export const editMember = async (memberId: string, memberData: unknown) => {
   }
 
   revalidatePath("/app", "layout");
+  return {
+    message: "Member saved successfully",
+  };
 };
 
 export const getMembers = async () => {
@@ -271,6 +277,7 @@ export const unattendEvent = async (memberId: string, eventId: number) => {
         },
       },
     });
+    revalidatePath("/app");
     return { success: true };
   } catch (error) {
     console.error("Error unattending event:", error);
